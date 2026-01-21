@@ -55,80 +55,80 @@ CREATE TABLE retail_sales
 
 ```sql
 -- Look at the whole table
-select *
-from retail_sales;
+SELECT *
+FROM retail_sales;
 
 -- Let us see the number of total orders or transactions
-select count(*)
-from retail_sales;
+SELECT COUNT(*)
+FROM retail_sales;
 
 -- checking for duplicates
-select transactions_id, count(*)
-from retail_sales
-group by transactions_id
-having count(*) > 1;
+SELECT transactions_id, COUNT(*)
+FROM retail_sales
+GROUP BY transactions_id
+HAVING COUNT(*) > 1;
 
 -- count categories
-select count(distinct category)
-from retail_sales;
+SELECT COUNT(DISTINCT category)
+FROM retail_sales;
 
 -- seeing the number of unique customers in the table
-select count(distinct customer_id) as no_of_customers
-from retail_sales;
+SELECT COUNT(DISTINCT customer_id) as no_of_customers
+FROM retail_sales;
 
 -- checking for null values
-select *
-from retail_sales
-where transactions_id is null or sale_date is null or sale_time is null	
-or customer_id is null	or gender is null	or age is null	or category	is null
-or quantiy is null	or price_per_unit is null	or cogs is null	or total_sale is null;
+SELECT *
+FROM retail_sales
+WHERE transactions_id is null OR sale_date is null OR sale_time is null	
+OR customer_id is null	OR gender is null	OR age is null	OR category	is null
+OR quantiy is null	OR price_per_unit is null	OR cogs is null	OR total_sale is null;
 
 -- deleting null values
-delete
-from retail_sales
-where transactions_id is null or sale_date is null or sale_time is null	
-or customer_id is null	or gender is null	or age is null	or category	is null
-or quantiy is null	or price_per_unit is null	or cogs is null	or total_sale is null;
+DELETE
+FROM retail_sales
+WHERE transactions_id is null OR sale_date is null OR sale_time is null	
+OR customer_id is null	OR gender is null OR age is null OR category is null
+or quantiy is null	OR price_per_unit is null OR cogs is null	OR total_sale is null;
 
 -- data consistency, legal age bounds
-select min(age) as min_age, max(age) as max_age
-from retail_sales;
+SELECT min(age) as min_age, max(age) as max_age
+FROM retail_sales;
 
 -- data consistency check on category making sure there is no errors on this column
 -- or that categories makes sense
-select distinct category
-from retail_sales;
+SELECT DISTINCT category
+FROM retail_sales;
 
 -- data consistency, quantity should not be <= 0
-select distinct quantiy
-from retail_sales;
+SELECT DISTINCT quantiy
+FROM retail_sales;
 
 -- date consistency check
-select min(sale_date), max(sale_date)
-from retail_sales;
+SELECT MIN(sale_date), MAX(sale_date)
+FROM retail_sales;
 
 -- time consistency check
-select min(sale_time), max(sale_time)
-from retail_sales;
+SELECT MIN(sale_time), MAX(sale_time)
+FROM retail_sales;
 
 -- checking the price ranges per unit shouldn't be negative or 0
-select min(price_per_unit), max(price_per_unit)
-from retail_sales;
+SELECT MIN(price_per_unit), MAX(price_per_unit)
+FROM retail_sales;
 -- checking the cost of goods, this also shouldn't be negative or 0
-select min(cogs), max(cogs)
-from retail_sales;
+SELECT MIN(cogs), MAX(cogs)
+FROM retail_sales;
 -- checking the total_sale, this also shouldn't be negative or 0
-select min(total_sale), max(total_sale)
-from retail_sales;
+SELECT MIN(total_sale), MAX(total_sale)
+FROM retail_sales;
 
 -- check gender column for consistency and errors or formats
-select distinct gender
-from retail_sales;
+SELECT DISTINCT gender
+FROM retail_sales;
 
 -- checking correct total_sale value which should be quantity multiplied by the price of the unit
-select *
-from retail_sales
-where total_sale <> quantiy * price_per_unit;
+SELECT *
+FROM retail_sales
+WHERE total_sale <> quantiy * price_per_unit;
 
 ```
 
@@ -136,21 +136,21 @@ where total_sale <> quantiy * price_per_unit;
 
 The following SQL queries were developed to answer specific business questions:
 
-1. **Checking transactions which had loss(where cost of goods was greater than total_sales)**:
+1. **Checking Transactions With Loss (COGS > Total Sales)**:
 ```sql
--- Exploring the data
--- checking any loss because the cost is higher than total_sale made
-select * 
-from retail_sales
-where cogs > total_sale;
--- In such situations, perhaps increasing the price per unit would be appropriate to avoid loss
+-- Exploring transactions where cost of goods sold exceeds total sales
+SELECT *
+FROM retail_sales
+WHERE cogs > total_sale;
+
+-- In such cases, increasing the price per unit may help avoid losses
 ```
 
-2. **Total cost of goods and total sales over all transactions**:
+2. **Total Cost of Goods and Total Sales Across All Transactions**:
 ```sql
--- seeing the total cost of goods and total sales over all transactions
-select sum(cogs) as total_cogs, sum(total_sale) as total_sales
-from retail_sales;
+-- Calculating total cost of goods sold and total sales
+SELECT SUM(cogs) AS total_cogs, SUM(total_sale) AS total_sales
+FROM retail_sales;
 ```
 
 3. **Adding Profit column and calculating profit over all transactions**:
@@ -239,15 +239,15 @@ group by gender;
 10. **Write a SQL query to create each shift and number of orders (Example Morning <12, Afternoon Between 12 & 17, Evening >17)**:
 ```sql
 -- To see which timeframes had most sales and profit for strategic marketing times.
-select shift, sum(total_sale) as t_s, sum(profit) as p
-from (select *, 
-case 
-when extract(hour from sale_time) < 12 then 'Morning'
-when extract(hour from sale_time) between 12 and 17 then 'Afternoon'
-when extract(hour from sale_time) > 17 then 'Evening'
+SELECT shift, sum(total_sale) as t_s, sum(profit) as p
+FROM (SELECT *, 
+CASE 
+WHEN extract(hour from sale_time) < 12 then 'Morning'
+WHEN extract(hour from sale_time) between 12 and 17 then 'Afternoon'
+WHEN extract(hour from sale_time) > 17 then 'Evening'
 end as shift
-from retail_sales_profit_included) time
-group by shift;
+FROM retail_sales_profit_included) time
+GROUP BY shift;
 
 -- Evening time had most sales and profit, perhaps because evening time people have more time to 
 -- buy rather than other times which they may work.
