@@ -24,9 +24,9 @@ Built a strong foundation in SQL by performing data cleaning, exploratory analys
 
 ```sql
 -- creating the practice project practical database
-drop database if exists `practice_project`;
-create database `practice_project`;
-use `practice_project`;
+DROP DATABASE IF EXISTS `practice_project`;
+CREATE DATABASE `practice_project`;
+USE `practice_project`;
 
 CREATE TABLE retail_sales
 (
