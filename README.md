@@ -257,8 +257,8 @@ group by shift;
 
 - **Customer Demographics**: The dataset includes customers from various age groups, with sales distributed across different categories such as Clothing, Electronics and Beauty.
 - **High-Value Transactions**: Several transactions had a total sale amount greater than 1000, indicating premium purchases.
-- **Sales Trends**: Seeing that Q4 had highest orders and total_sales and profit
-- **Customer Insights**: The analysis identifies the high-ordering customers and the most popular product categories.
+- **Sales Trends**: Q4 seemed to have the highest orders including total_sales and profit which matches expectations since multiple holidays fall in Q4 such as Thanksgiving and Christmas. 
+- **Customer Insights**: The analysis identifies high-ordering customers and the most popular product categories.
 
 ## Reports
 
