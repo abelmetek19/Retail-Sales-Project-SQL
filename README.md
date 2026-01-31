@@ -167,11 +167,12 @@ from retail_sales_profit_included;
 
 4. **Which category had the most profit and sales?**:
 ```sql
--- To see which category had most profit and sales. 
-select category, sum(total_sale) as t_s, round(sum(profit), 2) p
-from retail_sales_profit_included
-group by category
-order by p desc;
+-- To see which category had most profit and sales and their percentage of profit. 
+SELECT category, SUM(total_sale) AS t_s, ROUND(SUM(profit), 2) p, 
+ROUND(SUM(profit) * 100.0 / (SELECT SUM(profit) FROM retail_sales_profit_included), 2) AS profit_percentage
+FROM retail_sales_profit_included
+GROUP BY category
+ORDER BY p DESC ;
 -- The clothing category had most profit and sales compared to beauty or electronics. 
 ```
 
